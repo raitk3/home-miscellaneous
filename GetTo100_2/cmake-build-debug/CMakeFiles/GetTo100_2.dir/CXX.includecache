@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/mdea/OneDrive/Documents/home-miscellaneous/GetTo100_2/data.h
+
+C:/Users/mdea/OneDrive/Documents/home-miscellaneous/GetTo100_2/game_logic.cpp
+game_logic.h
+C:/Users/mdea/OneDrive/Documents/home-miscellaneous/GetTo100_2/game_logic.h
+
+C:/Users/mdea/OneDrive/Documents/home-miscellaneous/GetTo100_2/game_logic.h
+iostream
+-
+cstdlib
+-
+ctime
+-
+data.h
+C:/Users/mdea/OneDrive/Documents/home-miscellaneous/GetTo100_2/data.h
+
