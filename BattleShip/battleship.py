@@ -134,12 +134,12 @@ def play():
 	my_field = generate_field()
 	enemy_field = generate_field()
 	print_field(my_field, enemy_field)
-	#while get_count(SHIP, my_field) != 20:
-	#	ship_coords = input("Kuhu panna laev? Ots1-Ots2: ").upper().split('-')
-	#	if len(ship_coords) == 1:
-	#		ship_coords.append(ship_coords[0])
-	#	my_field = add_ship(my_field, ship_coords[0], ship_coords[1])
-	#	print_field(my_field, enemy_field)
+	while get_count(SHIP, my_field) != 20:
+		ship_coords = input("Kuhu panna laev? Ots1-Ots2: ").upper().split('-')
+		if len(ship_coords) == 1:
+			ship_coords.append(ship_coords[0])
+		my_field = add_ship(my_field, ship_coords[0], ship_coords[1])
+		print_field(my_field, enemy_field)
 	while not check_end(my_field, enemy_field):
 		players_turn(my_field, enemy_field)
 		opponents_turn(my_field, enemy_field)
