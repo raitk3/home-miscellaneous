@@ -122,12 +122,12 @@ def opponents_turn(my_field, enemy_field):
 	while not missed:
 		square_to_put = input('Mis ruut?').upper()
 		type = get_square(my_field, square_to_put)
-		if type == HIT:
+		if type == SHIP or type == HIT:
 			my_field = hit(my_field, square_to_put)
 		elif type == EMPTY:
 			my_field = miss(my_field, square_to_put)
 			missed = True
-	print_field(my_field, enemy_field)
+		print_field(my_field, enemy_field)
 	
 	
 def play():
