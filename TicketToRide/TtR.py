@@ -49,7 +49,7 @@ def ask_input(player):
 		return number_of_points
 	else:
 		print('Invalid length!')
-		return 0
+		return ask_input(player)
 
 
 def print_table(list_of_players, turn):

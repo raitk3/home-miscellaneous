@@ -1,4 +1,3 @@
-#include <iostream>
 #include "game_logic.h"
 #include "display.h"
 #include "data.h"

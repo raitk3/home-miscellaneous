@@ -4,6 +4,15 @@ HIT = '▒'
 SUNK = '▓'
 MISS = 'X'
 ships = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4]
+
+class Ship:
+	def __init__(self, coords1, coords2):
+        self.row_1 = int(coords1[1:]) - 1
+		self.row_2 = int(coords2[1:]) - 1
+		self.col_1 = ord(coords1[0]) - 65
+		self.col_2 = ord(coords2[0]) - 65
+
+
 def generate_field():
 	return [[EMPTY for _ in range(10)] for _ in range(10)]
 	
@@ -25,8 +34,6 @@ def check_ship(field, row_1, row_2, col_1, col_2):
 		for row in range(max(0, min(row_1 - 1, row_2 - 1)), min(max(row_1 + 2, row_2 + 2), 10)):
 				for square in range(max(0, min(col_1 - 1, col_2 - 1)), min(max(col_1 + 2, col_2 + 2), 10)):
 					if field[row][square] != EMPTY:
-						print(row, square)
-						print(field[row][square])
 						print('EMPTY FAILS!')
 						print('CHECK FAILS!')
 						return False
@@ -128,7 +135,6 @@ def opponents_turn(my_field, enemy_field):
 			my_field = miss(my_field, square_to_put)
 			missed = True
 		print_field(my_field, enemy_field)
-	
 	
 def play():
 	my_field = generate_field()
