@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/mdea/OneDrive/Documents/home-miscellaneous/twoty/main.cpp" "C:/Users/mdea/OneDrive/Documents/home-miscellaneous/twoty/cmake-build-debug/CMakeFiles/twoty.dir/main.cpp.obj"
+  "C:/Users/mdea/Documents/home-miscellaneous/twoty/main.cpp" "C:/Users/mdea/Documents/home-miscellaneous/twoty/cmake-build-debug/CMakeFiles/twoty.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

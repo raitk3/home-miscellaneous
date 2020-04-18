@@ -126,6 +126,7 @@ def game_loop():
 			break
 		players[turn].add_points(score)
 		turn = (turn + 1) % len(players)
+		print()
 		print("Scores:")
 		print(print_table(players, turn))
 	return players
