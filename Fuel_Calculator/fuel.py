@@ -1,6 +1,7 @@
-road_per_100 = 6.5
-city_per_100 = 11.6
-average_per_100 = 8.2
+# road, city, average
+list_per_100 = [6.5, 11.6, 8.2]
+
+###INPUT###
 
 def get_float(text, decimal_places=None):
     answer = input(text)
@@ -10,84 +11,149 @@ def get_float(text, decimal_places=None):
         print("Insert a floating-point number!")
         return get_float(text)
 
-def print_instructions():
-    print("\n1 - Get fuel per 100km\n2 - Get Euros per 100km\n3 - €->km\n4 - km->€\n5 - Set fuel price.\n")
-
 def set_fuel_price():
     return get_float("Insert the fuel price! ", 3)
+
+###PRINTS###
+
+def print_instructions():
+    instructions = ["1 - l / 100km", "2 - € / 100km", "3 - € -> km", "4 - km -> €", "5 - l -> km", "6 - Calculate fuel and cost based on the Route", "7 - Set fuel price."]
+    print(*instructions, sep="\n")
+
+def print_km_by_litres(amount_of_fuel):
+    """
+    Print out mileage with given amount of fuel.
     
-def get_100km_fuel(fuel_price):
-    road_100km = round(road_per_100 * fuel_price, 2)
-    city_100km = round(city_per_100 * fuel_price, 2)
-    average_100km = round(average_per_100 * fuel_price, 2)
-    print("\nFuel consumption:")
-    print(f"Road: {road_per_100}l/100km")
-    print(f"City: {city_per_100}l/100km")
-    print(f"Avg: {average_per_100}l/100km")
+    Input: Amount of fuel in litres
+    """
+    road_mileage, city_mileage, average_mileage = calculate_km_with_litres(amount_of_fuel)
+    print(f"Road mileage: {road_mileage}km")
+    print(f"City mileage: {city_mileage}km")
+    print(f"Avg mileage: {average_mileage}km")
     print()
 
-def get_100km_price(fuel_price):
-    road_100km = round(road_per_100 * fuel_price, 2)
-    city_100km = round(city_per_100 * fuel_price, 2)
-    average_100km = round(average_per_100 * fuel_price, 2)
+def print_100km_fuel():
+    """
+    Print Fuel consumption per 100km
+    """
+    print("\nFuel consumption:")
+    print(f"Road: {list_per_100[0]}l/100km")
+    print(f"City: {list_per_100[1]}l/100km")
+    print(f"Avg: {list_per_100[2]}l/100km")
+    print()
+
+def print_100km_price(fuel_price):
+    road_100km, city_100km, average_100km = get_100km_price(fuel_price)
     print("\n100km fuel price:")
     print(f"Road: {road_100km}€/100km")
     print(f"City: {city_100km}€/100km")
     print(f"Avg: {average_100km}€/100km")
     print()
 
-def calculate_km(fuel_price):
-    print()
-    money_given = get_float("Insert the amount of money given!(0 - exit) ", 2)
-    while money_given != 0:
-        amount_of_fuel = round(money_given / fuel_price, 2)
+def print_mileage_from_money(fuel_price):
+    while (money_given := get_float("Insert the amount of money given!(0 - exit) ", 2)) != 0:
+        amount_of_fuel = calculate_fuel_with_money(money_given)
         print(f"{money_given}€ gets about {amount_of_fuel}l of fuel.")
-        road_mileage = round(amount_of_fuel / road_per_100 * 100, 3)
-        city_mileage = round(amount_of_fuel / city_per_100 * 100, 3)
-        average_mileage = round(amount_of_fuel / average_per_100 * 100, 3)
-        print(f"Road mileage: {road_mileage}km")
-        print(f"City mileage: {city_mileage}km")
-        print(f"Avg mileage: {average_mileage}km")
+        print_km_by_litres(amount_of_fuel)
         print()
-        money_given = get_float("Insert the amount of money given!(0 - exit) ", 2)
 
-def calculate_money_with_km(fuel_price):
-    print()
-    kilometres = get_float("Insert the number of km driven!(0 - exit) ", 3)
-    while kilometres != 0:
-        road_fuel = kilometres * road_per_100 / 100
-        city_fuel = kilometres * city_per_100 / 100
-        average_fuel = kilometres * average_per_100 / 100
-
-        road_cost = round(road_fuel * fuel_price, 2)
-        city_cost = round(city_fuel * fuel_price, 2)
-        average_cost = round(average_fuel * fuel_price, 2)
-
+def print_money_with_fuel(fuel_price):
+    while (kilometres := get_float("Insert the number of km driven!(0 - exit) ", 3)) != 0:
+        road_cost, city_cost, average_cost = calculate_money_with_km(fuel_price, kilometres)
         print(f"Road cost: {road_cost}€")
         print(f"City cost: {city_cost}€")
         print(f"Avg cost: {average_cost}€")
         print()
-        kilometres = get_float("Insert the number of km driven!(0 - exit) ", 3)
 
+def print_kilometres_with_fuel():
+    while (amount_of_fuel := get_float("Insert the amount of fuel in litres!(0 - exit) ", 2)) != 0:
+        print_km_by_litres(amount_of_fuel)
+        print()
+
+def print_route_fuel(fuel_price):
+    while (road_km := get_float("Insert both 0 to exit!\nInsert km on road: ", 3)) != 0 and (city_km := get_float("Insert km in the city: ", 3)) != 0:
+        fuel, cost = calculate_route(road_km, city_km, fuel_price)
+        print(f"Total fuel usage is {fuel}l")
+        print(f"Total cost would be {cost}€")
+        print()
+
+###MATHS###
+
+def calculate_km_with_litres(amount_of_fuel):
+    """
+    Calculate how many km can be driven with given fuel.
     
+    Input: Amount of fuel in litres.
+    Return: Average mileages.
+    """
+    return [round(amount_of_fuel / per_100 * 100, 3) for per_100 in list_per_100]
+
+def get_100km_price(fuel_price):
+    """
+    Get how much 100km of fuel costs.
+
+    Input: amount_of_fuel
+    Return: Price of 100km of fuel in Euros
+    """
+    return [round(per_100 * fuel_price, 2) for per_100 in list_per_100]
+
+def calculate_fuel_with_money(money_given):
+    """
+    Calculate how much fuel you get with given money.
+    
+    Input: Money given in Euros
+    Return: Fuel in litres
+    """
+    return round(money_given / fuel_price, 2)
+
+def calculate_1km_fuel():
+    """
+    Calculate fuel per 1 km.
+    """
+    return [per_100 / 100 for per_100 in list_per_100]
+
+def calculate_money_with_km(fuel_price, kilometres):
+    """
+    Calculate how much certain amount of kilometres cost.
+
+    Input: Fuel_price, kilometres driven
+    Return: Fuel cost in Euros
+    """
+    
+    amount_of_fuel = [(kilometres * km) for km in calculate_1km_fuel()]
+
+    return [round(fuel * fuel_price, 2) for fuel in amount_of_fuel]
+
+def calculate_route(road_km, city_km, fuel_price):
+    """
+    Calculate fuel and it's cost, given km on road, in city and fuel price.
+
+    Input: km on road, km in city, fuel price
+    Return fuel usage and it's price.
+    """
+    return (fuel := (road_km * (km_fuel := calculate_1km_fuel())[0] + city_km * km_fuel[1])), round(fuel * fuel_price, 2)
+
+###MAIN###
 
 if __name__ == "__main__":
     fuel_price = set_fuel_price()
     print_instructions()
-    action_to_do = input("What do you wish to do? ")
-    while action_to_do.lower() != "exit":
+    while (action_to_do := input("What do you wish to do? ")).lower() != "exit":
         if action_to_do == "1":
-            get_100km_fuel(fuel_price)
+            print_100km_fuel()
         elif action_to_do == "2":
-            get_100km_price(fuel_price)
+            print_100km_price(fuel_price)
         elif action_to_do == "3":
-            calculate_km(fuel_price)
+            print_mileage_from_money(fuel_price)
         elif action_to_do == "4":
-            calculate_money_with_km(fuel_price)
+            print_money_with_fuel(fuel_price)
         elif action_to_do == "5":
+            print_kilometres_with_fuel()
+        elif action_to_do == "6":
+            print_route_fuel(fuel_price)
+        elif action_to_do == "7":
             fuel_price = set_fuel_price()
         elif action_to_do == "info":
             print_instructions()
         else:
             print('Invalid action! Insert "info" to get list of commands!')
-        action_to_do = input("What do you wish to do? ")
