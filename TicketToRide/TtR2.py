@@ -78,7 +78,7 @@ class Game:
         for i in range(len(self.list_of_players)):
             for j in range(8):
                 self.buttons[8*i+j].grid(row = j+2, column = i, sticky="wesn")
-        end_button.grid(row = 9, column = 0, columnspan = len(self.list_of_players), sticky="nesw")
+        end_button.grid(row = 10, column = 0, columnspan = len(self.list_of_players), sticky="nesw")
 
     def longest_railroad(self):
         self.clear(self.root)
