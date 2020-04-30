@@ -71,7 +71,7 @@ def print_kilometres_with_fuel():
         print()
 
 def print_route_fuel(fuel_price):
-    while (road_km := get_float("Insert both 0 to exit!\nInsert km on road: ", 3)) != 0 and (city_km := get_float("Insert km in the city: ", 3)) != 0:
+    while (road_km := get_float("Insert number smaller than 0 to exit!\nInsert km on road: ", 3)) >= 0 and (city_km := get_float("Insert km in the city: ", 3)) >= 0:
         fuel, cost = calculate_route(road_km, city_km, fuel_price)
         print(f"Total fuel usage is {fuel}l")
         print(f"Total cost would be {cost}€")

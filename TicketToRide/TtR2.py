@@ -136,7 +136,6 @@ class Game:
             name = player.name
             score = str(player.score)
             border_relief = "raised"
-            self.scores.grid_columnconfigure(i, weight=1)
             tk.Label(self.scores, text = name, borderwidth = border_width, relief = border_relief, font = regular_font, bg = header_colors[player.color], fg = text_colors[player.color]).grid(row = 0, column = i, sticky="wesn")
             tk.Label(self.scores, text = score, borderwidth = border_width, relief = border_relief, font = score_font, bg = score_colors[player.color], fg = text_colors[player.color]).grid(row = 1, column = i, sticky="wesn")
     
@@ -161,7 +160,7 @@ class Game:
 ############################################################
 class Player:
     def __init__(self, name, i):
-        self.name = name.capitalize()
+        self.name = name.title()
         self.score = cost_of_station * number_of_stations
         self.stations_left = number_of_stations
         self.color = i
