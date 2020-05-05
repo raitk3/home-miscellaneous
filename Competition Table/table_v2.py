@@ -52,10 +52,10 @@ class Table:
     first = Team("")
 
     def __init__(self):
-        number_of_teams = int(input("Number of teams: "))
+        number_of_teams = int(input("Tiimide arv: "))
         i = 0
         while i in range(number_of_teams):
-            if (name := input(f"Team {i+1}: ")) in self.team_names:
+            if (name := input(f"Tiim {i+1}: ")) in self.team_names:
                 continue
             self.teams.append(Team(name))
             self.team_names[name] = i
@@ -74,7 +74,7 @@ class Table:
 
             team_1_name, team_1_score = self.get_team_and_score(team_1)
             team_2_name, team_2_score = self.get_team_and_score(team_2)
-            if f"{team_1_name} - {team_2_name}" not in self.games and team_1_name != team_2_name:
+            if f"{team_1_name} - {team_2_name}" not in self.games and f"{team_2_name} - {team_1_name}" not in self.games and team_1_name != team_2_name:
                 winner_name = team_1_name if team_1_score > team_2_score else team_2_name
                 loser_name = team_1_name if winner_name == team_2_name else team_2_name
                 winner_score = max(team_1_score, team_2_score)
@@ -126,18 +126,19 @@ class Table:
         regular_relief_1 = "groove"
         regular_relief_2 = "groove"
         font_family = "Helvetica"
+        header_font = tkFont.Font(family = font_family, size=24)
         regular_font = tkFont.Font(family = font_family, size=48)
         bold_font = tkFont.Font(family = font_family, size=48, weight = tkFont.BOLD)
 
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Team", font = bold_font).grid(row = 0, column = 0, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="M", font = bold_font).grid(row = 0, column = 1, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Võ", font = bold_font).grid(row = 0, column = 2, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Vi", font = bold_font).grid(row = 0, column = 3, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="K", font = bold_font).grid(row = 0, column = 4, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="RV", font = bold_font).grid(row = 0, column = 5, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="RK", font = bold_font).grid(row = 0, column = 6, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="RV", font = bold_font).grid(row = 0, column = 7, sticky='EWNS')
-        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="P", font = bold_font).grid(row = 0, column = 8, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Tiim", font = header_font).grid(row = 0, column = 0, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Mängud", font = header_font).grid(row = 0, column = 1, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Võidud", font = header_font).grid(row = 0, column = 2, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Viigid", font = header_font).grid(row = 0, column = 3, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Kaotused", font = header_font).grid(row = 0, column = 4, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Võidetud\nlahingud", font = header_font).grid(row = 0, column = 5, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Kaotatud\nlahingud", font = header_font).grid(row = 0, column = 6, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Lahingute\nvahe", font = header_font).grid(row = 0, column = 7, sticky='EWNS')
+        tk.Label(table_window, borderwidth = border_width, relief = bold_relief, text="Punktid", font = header_font).grid(row = 0, column = 8, sticky='EWNS')
 
         sorted_table = sorted(self.teams, key=lambda x: [x.get_score(), x.rounds_won], reverse = True)
 
@@ -217,7 +218,7 @@ class Table:
 
     def get_end(self):
         for team in self.teams:
-            if team.get_games() != 2 * (len(self.teams) - 1):
+            if team.get_games() != len(self.teams) - 1:
                 return False
         return True
 
