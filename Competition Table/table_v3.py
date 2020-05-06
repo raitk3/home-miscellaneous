@@ -57,6 +57,7 @@ class Games:
         self.tournament = tournament
         self.window = tk.Tk()
         self.window.title("Games")
+        self.games_order=[]  #Robocode specific
         self.games = {}
 
     def show_games(self):
@@ -70,7 +71,15 @@ class Games:
                     number_of_rows = temp_rows
         
         self.clear_window()
-        for i, game in enumerate(self.games):
+        # for i, game in enumerate(self.games):
+        #     ttk.Button(self.window, text=f"{game[0]} vs {game[1]}", command=lambda game=game: self.tournament.input.get_result(game)).grid(row=i % number_of_rows, column=(i // number_of_rows)*2, sticky="esnw")
+        #     result = ttk.Label(self.window, text=f"{self.games[game][0]}:{self.games[game][1]}")
+        #     if self.games[game] == "N/A":
+        #         result = tk.Label(self.window, text="N/A")
+        #     result.grid(row=i % number_of_rows, column=(i // number_of_rows) * 2 + 1)
+
+        #Robocode
+        for i, game in enumerate(self.games_order):
             ttk.Button(self.window, text=f"{game[0]} vs {game[1]}", command=lambda game=game: self.tournament.input.get_result(game)).grid(row=i % number_of_rows, column=(i // number_of_rows)*2, sticky="esnw")
             result = ttk.Label(self.window, text=f"{self.games[game][0]}:{self.games[game][1]}")
             if self.games[game] == "N/A":
@@ -89,7 +98,37 @@ class Games:
         for i in range(len(self.tournament.teams)):
             for j in range(i+1, len(self.tournament.teams)):
                 self.games[(self.tournament.teams[i], self.tournament.teams[j])] = "N/A"   
- 
+
+        #Robocode specific
+        self.games_order = [(self.tournament.teams[0], self.tournament.teams[1]),
+        (self.tournament.teams[2], self.tournament.teams[3]),
+        (self.tournament.teams[4], self.tournament.teams[5]),
+        (self.tournament.teams[6], self.tournament.teams[7]),
+        (self.tournament.teams[1], self.tournament.teams[2]),
+        (self.tournament.teams[3], self.tournament.teams[4]),
+        (self.tournament.teams[5], self.tournament.teams[6]),
+        (self.tournament.teams[0], self.tournament.teams[7]),
+        (self.tournament.teams[1], self.tournament.teams[3]),
+        (self.tournament.teams[2], self.tournament.teams[4]),
+        (self.tournament.teams[3], self.tournament.teams[5]),
+        (self.tournament.teams[4], self.tournament.teams[6]),
+        (self.tournament.teams[5], self.tournament.teams[7]),
+        (self.tournament.teams[0], self.tournament.teams[2]),
+        (self.tournament.teams[1], self.tournament.teams[4]),
+        (self.tournament.teams[2], self.tournament.teams[5]),
+        (self.tournament.teams[3], self.tournament.teams[6]),
+        (self.tournament.teams[4], self.tournament.teams[7]),
+        (self.tournament.teams[0], self.tournament.teams[3]),
+        (self.tournament.teams[1], self.tournament.teams[5]),
+        (self.tournament.teams[2], self.tournament.teams[6]),
+        (self.tournament.teams[3], self.tournament.teams[7]),
+        (self.tournament.teams[0], self.tournament.teams[4]),
+        (self.tournament.teams[1], self.tournament.teams[6]),
+        (self.tournament.teams[2], self.tournament.teams[7]),
+        (self.tournament.teams[0], self.tournament.teams[5]),
+        (self.tournament.teams[1], self.tournament.teams[7]),
+        (self.tournament.teams[0], self.tournament.teams[6])]
+        print(len(self.games))
     def set_result(self, playing_teams: tuple, result: tuple):
         self.games[playing_teams] = result
         self.tournament.loop()
@@ -126,7 +165,7 @@ class Table:
         self.style.configure("Teams.TLabel", background = "#78909c", foreground="Black", borderwidth=border_width, relief=regular_relief_1, font=bold_font, anchor=tk.W, justify=tk.CENTER, wraplength=400)
         self.style.configure("Table.TLabel", background = "#a7c0cd", foreground="Black", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER)
         self.style.configure("Points.TLabel", background = "#78909c", foreground="Black", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER)
-
+    
 
     def update(self):
         
