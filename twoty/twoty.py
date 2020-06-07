@@ -29,7 +29,6 @@ def parse_three_digits(number):
 
 def get_string(number, three_blocks):
     text = ""
-    print(number)
     if number == 0 and three_blocks == 0:
         return "nil"
     if number > 999:

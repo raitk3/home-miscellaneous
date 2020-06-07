@@ -152,19 +152,20 @@ class Table:
         self.tournament = tournament
         self.style = ttk.Style()
 
-        border_width = 2
-        bold_relief = "groove"
-        regular_relief_1 = "sunken"
-        points_relief = "sunken"
-        header_font = ("Poppins Semibold", 18)
-        regular_font = ("Poppins", 48)
-        bold_font = ("Poppins Bold", 24)
+        border_width = 10
+        bold_relief = "solid"
+        regular_relief_1 = "solid"
+        points_relief = "solid"
+        header_font = ("Coluna Rounded", 28)
+        regular_font = ("Coluna Rounded", 36)
+        bold_font = ("Coluna Rounded", 24)
         
         self.style = ttk.Style(self.window)
-        self.style.configure("Header.TLabel", background = "#4b636e", foreground="white", borderwidth=2, relief=bold_relief, font=header_font, anchor=tk.CENTER, justify=tk.CENTER, weight="bold")
-        self.style.configure("Teams.TLabel", background = "#78909c", foreground="Black", borderwidth=border_width, relief=regular_relief_1, font=bold_font, anchor=tk.W, justify=tk.CENTER, wraplength=400)
-        self.style.configure("Table.TLabel", background = "#a7c0cd", foreground="Black", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER)
-        self.style.configure("Points.TLabel", background = "#78909c", foreground="Black", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER)
+        self.style.configure("Header.TLabel", background = "#232652", foreground="white", borderwidth=2, relief=bold_relief, font=header_font, anchor=tk.CENTER, justify=tk.CENTER, weight="bold", padding=5)
+        #self.style.configure("Header.TLabel", background = "#232652", foreground="white", borderwidth=2, bordercolor="black", font=header_font, anchor=tk.CENTER, justify=tk.CENTER, weight="bold")
+        self.style.configure("Teams.TLabel", background = "#232652", foreground="white", borderwidth=border_width, relief=regular_relief_1, font=bold_font, anchor=tk.W, justify=tk.CENTER, wraplength=400, padding=5)
+        self.style.configure("Table.TLabel", background = "#232652", foreground="white", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER, padding=5)
+        self.style.configure("Points.TLabel", background = "#232652", foreground="white", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER, padding=5)
     
 
     def update(self):
@@ -210,6 +211,41 @@ class Table:
         list_of_writable_lines.append(writable_separator)
         
         return list_of_writable_lines
+
+class Table_Mini:
+    def __init__(self, tournament):
+        super().__init__()
+        self.window = tk.Tk()
+        self.window.title("Scoresheet Mini")
+        self.tournament = tournament
+        self.style = ttk.Style()
+
+        border_width = 0
+        bold_relief = "solid"
+        regular_relief_1 = "solid"
+        points_relief = "solid"
+        header_font = ("Coluna Rounded", 28)
+        regular_font = ("Coluna Rounded", 36)
+        bold_font = ("Coluna Rounded", 24)
+        
+        self.style = ttk.Style(self.window)
+        self.style.configure("Header.TLabel", background = "#232652", foreground="white", borderwidth=border_width, relief=bold_relief, highlightcolor="pink", font=header_font, anchor=tk.CENTER, justify=tk.CENTER, weight="bold", padding=5)
+        self.style.configure("Teams.TLabel", background = "#232652", foreground="white", borderwidth=border_width, relief=regular_relief_1, font=bold_font, anchor=tk.W, justify=tk.CENTER, wraplength=400, padding=5)
+        self.style.configure("Points.TLabel", background = "#232652", foreground="white", borderwidth=border_width, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER, padding=5)
+    
+
+    def update(self):
+        
+        ttk.Label(self.window, style = "Header.TLabel", text="Leaderboard").grid(row = 0, column = 0, columnspan=2, sticky='EWNS')
+
+        sorted_table = sorted(self.tournament.teams, key=lambda x: (x.get_score(), x.get_round_diff(), x.rounds_won), reverse = True)
+        tk.Grid.columnconfigure(self.window, 0, weight=3)
+        tk.Grid.columnconfigure(self.window, 1, weight=1)
+        for i, team in enumerate(sorted_table):
+            tk.Grid.rowconfigure(self.window, i+1, weight=1)
+            ttk.Label(self.window, style="Teams.TLabel", text=team.name, anchor = "w").grid(row = i+1, column = 0, sticky='EWNS')
+            ttk.Label(self.window, style="Points.TLabel", text=str(team.get_score())).grid(row = i+1, column = 1, sticky='EWNS')
+
 
 #Team
 class Team:
@@ -281,6 +317,7 @@ class Tournament:
         self.loss_points = loss
         self.input = Input(self)
         self.table = None
+        self.table_mini = None
         self.games = None
         self.get_teams("teams.txt")
 
@@ -296,7 +333,8 @@ class Tournament:
             self.input.ask_number_of_players()
 
     def start(self, names):
-        self.table = Table(self)
+        self.table = Table(self) 
+        self.table_mini = Table_Mini(self)
         self.games = Games(self)
         for name in names:
             team = Team(name, self)
@@ -318,7 +356,8 @@ class Tournament:
     def loop(self):
         self.input.window.destroy()
         self.update_teams()
-        self.table.update()
+        self.table.update() #Comment this if you don't want the big one
+        self.table_mini.update()
         self.games.show_games()
  
 
