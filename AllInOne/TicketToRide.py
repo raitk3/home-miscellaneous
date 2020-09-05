@@ -11,8 +11,8 @@ score_colors = ["#e84118", "#fbc531", "#273c75", "#4cd137", "#353b48"]
 text_colors = ["Black", "Black", "Black", "Black", "Black"]
 ############################################################
 
-class Game:
-    def __init__(self):
+class TicketToRide:
+    def __init__(self, scores):
         self.background_color = "Black"
         self.table_color = "#222222"
         self.text_color = "White"
@@ -175,7 +175,7 @@ class Player:
 ############################################################
 
 def main():
-    game = Game()
+    game = TicketToRide()
 
 if __name__ == '__main__':
     main()

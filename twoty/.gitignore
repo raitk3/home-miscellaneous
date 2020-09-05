@@ -34,4 +34,6 @@
 *.app
 
 /cmake-build-debug/
-/.idea/
+.idea
+.vscode
+

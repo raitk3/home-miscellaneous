@@ -95,7 +95,12 @@ std::string get_string(int number, int three_blocks) {
 
 
 int main() {
-    for(int i = 0; i < 100000; i++) {
+    /*for(int i = 0; i < 100000; i++) {
         std::cout << i << ": " << get_string(i, 0) << std::endl;
+    }*/
+    int number;
+    while (true) {
+        std::cin >> number;
+        std::cout << number << ": " << get_string(number, 0) << std::endl;
     }
 }

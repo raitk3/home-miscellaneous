@@ -71,15 +71,7 @@ class Games:
                     number_of_rows = temp_rows
         
         self.clear_window()
-        # for i, game in enumerate(self.games):
-        #     ttk.Button(self.window, text=f"{game[0]} vs {game[1]}", command=lambda game=game: self.tournament.input.get_result(game)).grid(row=i % number_of_rows, column=(i // number_of_rows)*2, sticky="esnw")
-        #     result = ttk.Label(self.window, text=f"{self.games[game][0]}:{self.games[game][1]}")
-        #     if self.games[game] == "N/A":
-        #         result = tk.Label(self.window, text="N/A")
-        #     result.grid(row=i % number_of_rows, column=(i // number_of_rows) * 2 + 1)
-
-        #Robocode
-        for i, game in enumerate(self.games_order):
+        for i, game in enumerate(self.games):
             ttk.Button(self.window, text=f"{game[0]} vs {game[1]}", command=lambda game=game: self.tournament.input.get_result(game)).grid(row=i % number_of_rows, column=(i // number_of_rows)*2, sticky="esnw")
             result = ttk.Label(self.window, text=f"{self.games[game][0]}:{self.games[game][1]}")
             if self.games[game] == "N/A":
@@ -99,36 +91,6 @@ class Games:
             for j in range(i+1, len(self.tournament.teams)):
                 self.games[(self.tournament.teams[i], self.tournament.teams[j])] = "N/A"   
 
-        #Robocode specific
-        self.games_order = [(self.tournament.teams[0], self.tournament.teams[1]),
-        (self.tournament.teams[2], self.tournament.teams[3]),
-        (self.tournament.teams[4], self.tournament.teams[5]),
-        (self.tournament.teams[6], self.tournament.teams[7]),
-        (self.tournament.teams[1], self.tournament.teams[2]),
-        (self.tournament.teams[3], self.tournament.teams[4]),
-        (self.tournament.teams[5], self.tournament.teams[6]),
-        (self.tournament.teams[0], self.tournament.teams[7]),
-        (self.tournament.teams[1], self.tournament.teams[3]),
-        (self.tournament.teams[2], self.tournament.teams[4]),
-        (self.tournament.teams[3], self.tournament.teams[5]),
-        (self.tournament.teams[4], self.tournament.teams[6]),
-        (self.tournament.teams[5], self.tournament.teams[7]),
-        (self.tournament.teams[0], self.tournament.teams[2]),
-        (self.tournament.teams[1], self.tournament.teams[4]),
-        (self.tournament.teams[2], self.tournament.teams[5]),
-        (self.tournament.teams[3], self.tournament.teams[6]),
-        (self.tournament.teams[4], self.tournament.teams[7]),
-        (self.tournament.teams[0], self.tournament.teams[3]),
-        (self.tournament.teams[1], self.tournament.teams[5]),
-        (self.tournament.teams[2], self.tournament.teams[6]),
-        (self.tournament.teams[3], self.tournament.teams[7]),
-        (self.tournament.teams[0], self.tournament.teams[4]),
-        (self.tournament.teams[1], self.tournament.teams[6]),
-        (self.tournament.teams[2], self.tournament.teams[7]),
-        (self.tournament.teams[0], self.tournament.teams[5]),
-        (self.tournament.teams[1], self.tournament.teams[7]),
-        (self.tournament.teams[0], self.tournament.teams[6])]
-        print(len(self.games))
     def set_result(self, playing_teams: tuple, result: tuple):
         self.games[playing_teams] = result
         self.tournament.loop()
@@ -162,39 +124,30 @@ class Table:
         
         self.style = ttk.Style(self.window)
         self.style.configure("Header.TLabel", background = "#232652", foreground="white", borderwidth=2, relief=bold_relief, font=header_font, anchor=tk.CENTER, justify=tk.CENTER, weight="bold", padding=5)
-        #self.style.configure("Header.TLabel", background = "#232652", foreground="white", borderwidth=2, bordercolor="black", font=header_font, anchor=tk.CENTER, justify=tk.CENTER, weight="bold")
         self.style.configure("Teams.TLabel", background = "#232652", foreground="white", borderwidth=border_width, relief=regular_relief_1, font=bold_font, anchor=tk.W, justify=tk.CENTER, wraplength=400, padding=5)
         self.style.configure("Table.TLabel", background = "#232652", foreground="white", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER, padding=5)
         self.style.configure("Points.TLabel", background = "#232652", foreground="white", borderwidth=1, relief=regular_relief_1, font=regular_font, anchor=tk.CENTER, justify=tk.CENTER, padding=5)
     
 
     def update(self):
-        
-        ttk.Label(self.window, style = "Header.TLabel", text="Tiim").grid(row = 0, column = 0, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Mängud").grid(row = 0, column = 1, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Võidud").grid(row = 0, column = 2, sticky='EWNS')
-        #ttk.Label(self.window, borderwidth = border_width, relief = bold_relief, text="Viigid", font = header_font).grid(row = 0, column = 3, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Kaotused").grid(row = 0, column = 3, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Võidetud\nlahingud").grid(row = 0, column = 4, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Kaotatud\nlahingud").grid(row = 0, column = 5, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Lahingute\nvahe").grid(row = 0, column = 6, sticky='EWNS')
-        ttk.Label(self.window, style = "Header.TLabel", text="Punktid").grid(row = 0, column = 7, sticky='EWNS')
+        headers = ["Name", "M", "W", "D", "L", "GS", "GC", "GD", "P"]
+        for i, header in enumerate(headers):
+            ttk.Label(self.window, style = "Header.TLabel", text=header).grid(row = 0, column = i, sticky='EWNS')    
 
         sorted_table = sorted(self.tournament.teams, key=lambda x: (x.get_score(), x.get_round_diff(), x.rounds_won), reverse = True)
-        for i in range(1, 8):
+        for i in range(1, len(headers)):
             tk.Grid.columnconfigure(self.window, i, weight=1)
         for i, team in enumerate(sorted_table):
             tk.Grid.rowconfigure(self.window, i+1, weight=1)
-            ttk.Label(self.window, style="Teams.TLabel", text=team.name, anchor = "w").grid(row = i+1, column = 0, sticky='EWNS')
-            ttk.Label(self.window, style="Table.TLabel", text=str(team.get_games())).grid(row = i+1, column = 1, sticky='EWNS')
-            ttk.Label(self.window, style="Table.TLabel", text=str(team.wins)).grid(row = i+1, column = 2, sticky='EWNS')
-            #ttk.Label(self.window, borderwidth = border_width, relief = regular_relief_1, text=str(team.draws), font = regular_font).grid(row = i+1, column = 3, sticky='EWNS')
-            ttk.Label(self.window, style="Table.TLabel", text=str(team.defeats)).grid(row = i+1, column = 3, sticky='EWNS')
-            ttk.Label(self.window, style="Table.TLabel", text=str(team.rounds_won)).grid(row = i+1, column = 4, sticky='EWNS')
-            ttk.Label(self.window, style="Table.TLabel",  text=str(team.rounds_lost)).grid(row = i+1, column = 5, sticky='EWNS')
-            ttk.Label(self.window, style="Table.TLabel", text=str(team.get_round_diff())).grid(row = i+1, column = 6, sticky='EWNS')
-            ttk.Label(self.window, style="Points.TLabel", text=str(team.get_score())).grid(row = i+1, column = 7, sticky='EWNS')
-
+            data = [team.name, team.get_games(), team.wins, team.draws, team.defeats, team.rounds_won, team.rounds_lost, team.get_round_diff(), team.get_score()]
+            for j, data_label in enumerate(data):
+                if j == 0:
+                    ttk.Label(self.window, style="Teams.TLabel", text=data_label, anchor = "w").grid(row = i+1, column = j, sticky='EWNS')
+                elif data_label == data[-1]:
+                    ttk.Label(self.window, style="Points.TLabel", text=str(data_label)).grid(row = i+1, column = j, sticky='EWNS')
+                else:
+                    ttk.Label(self.window, style="Table.TLabel", text=str(data_label)).grid(row = i+1, column = j, sticky='EWNS')
+                
     def get_table(self):
         list_of_writable_lines = []
         sorted_table = sorted(self.tournament.teams, key=lambda x: [x.get_score(), x.get_round_diff()], reverse = True)
@@ -334,7 +287,7 @@ class Tournament:
 
     def start(self, names):
         self.table = Table(self) 
-        self.table_mini = Table_Mini(self)
+        #self.table_mini = Table_Mini(self)
         self.games = Games(self)
         for name in names:
             team = Team(name, self)
@@ -357,9 +310,9 @@ class Tournament:
         self.input.window.destroy()
         self.update_teams()
         self.table.update() #Comment this if you don't want the big one
-        self.table_mini.update()
+        #self.table_mini.update()
         self.games.show_games()
  
 
 if __name__ == "__main__":
-    tournament = Tournament(1, 0, 0)
+    tournament = Tournament(3, 1, 0)
