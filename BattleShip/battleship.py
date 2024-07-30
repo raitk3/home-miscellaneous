@@ -7,7 +7,7 @@ ships = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4]
 
 class Ship:
 	def __init__(self, coords1, coords2):
-        self.row_1 = int(coords1[1:]) - 1
+		self.row_1 = int(coords1[1:]) - 1
 		self.row_2 = int(coords2[1:]) - 1
 		self.col_1 = ord(coords1[0]) - 65
 		self.col_2 = ord(coords2[0]) - 65
@@ -100,6 +100,7 @@ def get_count(what_to_count, field):
 				count += 1
 	return count
 
+
 def check_end(my_field, enemy_field):
 	return get_count(SUNK, my_field) == 20 or get_count(SUNK, enemy_field) == 20
 
@@ -116,6 +117,7 @@ def players_turn(my_field, enemy_field):
 		elif action == 'miss':
 			enemy_field = miss(enemy_field, square_to_put)
 		print_field(my_field, enemy_field)
+
 
 def get_square(field, coords):
 	row = int(coords[1:]) - 1
@@ -135,6 +137,7 @@ def opponents_turn(my_field, enemy_field):
 			my_field = miss(my_field, square_to_put)
 			missed = True
 		print_field(my_field, enemy_field)
+	
 	
 def play():
 	my_field = generate_field()
